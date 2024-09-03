@@ -6,6 +6,18 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 from .models import Note,UserProfile
 
 
+class UserProfileListCreate(generics.ListCreateAPIView):
+    serializer_class = UserProfileSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        return UserProfile.objects.filter(user=user)
+
+    def perform_create(self, serializer):
+        # Automatically set the user for the new profile
+        serializer.save(user=self.request.user)
+
 class UserProfileDelete(generics.DestroyAPIView):
     serializer_class = UserProfileSerializer
     permission_classes = [IsAuthenticated]
