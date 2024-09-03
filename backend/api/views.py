@@ -1,11 +1,14 @@
 from django.shortcuts import render
 from django.contrib.auth.models import User
 from rest_framework import generics
-from .serializers import UserSerializer, NoteSerializer
+from .serializers import UserSerializer, NoteSerializer,UserProfileSerializer
 from rest_framework.permissions import IsAuthenticated, AllowAny
-from .models import Note
+from .models import Note,UserProfile
 
 
+class UserProfileListCreateAPIView(generics.ListCreateAPIView):
+    queryset = UserProfile.objects.all()
+    serializer_class = UserProfileSerializer
 class NoteListCreate(generics.ListCreateAPIView):
     serializer_class = NoteSerializer
     permission_classes = [IsAuthenticated]
